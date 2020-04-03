@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import {StatusBar} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
+import {SigaButton} from '~/styles/styles'
 
-import {Container, Content, Welcome, Action, TextAction} from './styles'
+import {Container, ContainerActions, Content, Welcome, Action, TextAction} from './styles'
 import {getRealm} from '~/service/Realm'
 import UserSchema from '~/utils/Schema/UserSchema'
 
@@ -25,9 +26,13 @@ export default function Home() {
       <StatusBar backgroundColor="#363" />
       <Welcome>Olá, {name?.match(/\w{1,}/)}</Welcome>
       <Content></Content>
-      <Action onPress={()=> navigation.navigate('Notas')} >
-        <TextAction>Notas</TextAction>
-      </Action>
+      <ContainerActions>
+        <Action onPress={() => navigation.navigate('Notas')}>
+          <SigaButton>
+            <TextAction>Notas</TextAction>
+          </SigaButton>
+        </Action>
+      </ContainerActions>
     </Container>
   )
 }

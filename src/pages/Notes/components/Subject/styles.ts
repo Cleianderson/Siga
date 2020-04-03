@@ -1,38 +1,57 @@
-import styled from 'styled-components/native';
+import styled from 'styled-components/native'
 
-export const Container = styled.TouchableOpacity.attrs({
-  hitSlop:{top:5,bottom:5,left:5,right:5}
-})`
+export const Container = styled.View`
   margin-top: 10px;
-  margin-bottom: 10px;
+  /* flex:1; */
+`
+
+export const Content = styled.View`
+  justify-content: center;
+  margin-left: 7px;
+  margin-right: 7px;
+  padding-top: 10px;
+  border: 0px #999 solid;
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+`
+
+export const Header = styled.View`
+  flex-direction: row;
+  /* margin-bottom: 5px; */
 `
 
 export const Items = styled.View`
-  width: 100%;
   flex-direction: row;
   justify-content: space-around;
+  margin-top: 7px;
+  /* padding: 10px 15px; */
 `
 
-export const Item = styled.View`
-  justify-content: center;
-  align-items: center;
-  /* border: 1px #ccc solid; */
-  min-width: 50px;
+export const Description = styled.Text`
+  text-align: center;
 `
+
+export const Item = styled.View``
 
 export const Data = styled.Text`
-  background: #faebd7;
-  width: 100%;
+  /* background: #faebd7; */
   text-align: center;
 `
 
 export const Value = styled.Text`
-  background: #e9e9e9;
-  width: 100%;
   text-align: center;
 `
 
 export const Text = styled.Text`
   color: #347851;
-  align-self: center;
+  flex: 1;
+  font-weight: bold;
+`
+export const Prof = styled.Text`
+  color: #347851;
+  text-align: center;
+  font-weight: bold;
 `

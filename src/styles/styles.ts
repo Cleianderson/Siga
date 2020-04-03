@@ -1,4 +1,5 @@
 import styled from 'styled-components/native'
+import Gradient from 'react-native-linear-gradient'
 
 export const Container = styled.View`
   flex: 1;
@@ -35,4 +36,14 @@ export const Submit = styled.TouchableOpacity`
 
 export const TextSubmit = styled.Text`
   color: #fff;
+`
+
+export const SigaButton = styled(Gradient).attrs({
+  colors: ['#090', '#363'],
+  start: {x: 0, y: 0},
+  end: {x: 0, y: 1},
+})`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `

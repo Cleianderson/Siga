@@ -1,10 +1,11 @@
 import styled from 'styled-components/native'
-import Gradient from 'react-native-linear-gradient'
 
-export const Container = styled.View``
+export const Container = styled.View`
+  flex: 1;
+`
 
 export const Content = styled.View`
-  flex:1;
+  flex: 1;
 `
 
 export const Welcome = styled.Text`
@@ -14,6 +15,21 @@ export const Welcome = styled.Text`
   text-align: center;
 `
 
-export const Action = styled.TouchableOpacity``
+export const ContainerActions = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+`
 
-export const TextAction = styled.Text``
+export const Action = styled.TouchableOpacity`
+  margin: 7px;
+  border: 1px #347851 solid;
+  border-radius: 3px;
+  height: 35px;
+  width: 50px;
+  background: #363;
+`
+
+export const TextAction = styled.Text`
+  color: #fff;
+  font-weight: bold;
+`

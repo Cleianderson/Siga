@@ -1,27 +1,27 @@
 export default class NoteSchema {
   static schema = {
     name: 'Note',
-    primaryKey: 'id',
     properties: {
-      id: 'int',
-      name: 'string',
-      va1: 'float',
-      va2: 'float',
-      va3: 'float?',
-      vaf: 'float?',
-      med: 'float',
-      mef: 'float',
-      faults: 'int',
+      prof: 'string',
+      mat: 'string',
+      VA1: 'string?',
+      VA2: 'string?',
+      VA3: 'string?',
+      VAFN: 'string?',
+      M: 'string?',
+      MFIN: 'string?',
+      Faltas: 'string',
     },
   }
 
-  public id: number
-  public name: string
-  public va1: number
-  public va2: number
-  public va3?: number
-  public vaf?: number
-  public med: number
-  public mef: number
-  public faults: number
+  public prof: string
+  public mat: string
+  public VA1: string
+  public VA2: string
+  public VA3?: string
+  public VAFN?: string
+  public M: string
+  public MFIN: string
+  public Faltas: string
+ 
 }

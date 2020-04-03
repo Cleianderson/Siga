@@ -1,5 +1,3 @@
-import Note from './NoteSchema'
-
 export default class StudentSchema {
   static schema = {
     name: 'User',
@@ -7,7 +5,7 @@ export default class StudentSchema {
     properties: {
       login: 'string',
       password: 'string',
-      notes: {type:'Note[]',default:[]},
+      notes: {type:'Period[]',default:[]},
       name: 'string',
       type: 'string',
       org: 'string?',
@@ -19,7 +17,7 @@ export default class StudentSchema {
   public password: string
   public name: string
   public type: string
-  public notes?: Note[] | null
+  public notes?: PeriodType[] | null
   public org?: string | null
   public model?: string | null
 }
