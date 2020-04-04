@@ -1,12 +1,10 @@
 import React from 'react'
-import {createDrawerNavigator} from '@react-navigation/drawer'
 import {createStackNavigator} from '@react-navigation/stack'
 
 // import { Container } from './styles';
 import Homepage from '../Home'
 import Notespage from '../Notes'
 
-const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
 export default function Home() {
