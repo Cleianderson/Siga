@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {ActivityIndicator as Indicator} from 'react-native'
+import {ActivityIndicator as Indicator, FlatList} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {Container, Content, Reload, Error} from './styles'
+import {Container, Reload, Error} from './styles'
 import Period from './components/Period'
 
 import {getRealm} from '~/service/Realm'
@@ -47,8 +47,8 @@ export default function Notes() {
     }
   }
 
-  function _render() {
-    return periods?.map((item, index) => <Period key={index} item={item} />)
+  const _render = ({item}: {item: PeriodType}) => {
+    return <Period item={item} />
   }
 
   useEffect(() => {
@@ -64,7 +64,14 @@ export default function Notes() {
 
   return (
     <Container>
-      <Content>{_render()}</Content>
+      <FlatList
+        getItemLayout={(data, index) => (
+          {length: 350, offset: 50 * index, index}
+        )}
+        data={periods}
+        keyExtractor={(i, index) => String(index)}
+        renderItem={_render}
+      />
       <Error>{error}</Error>
       <Reload onPress={refreshNotes}>
         <SigaButton>

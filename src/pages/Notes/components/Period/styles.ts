@@ -9,8 +9,8 @@ export const Header = styled.View`
 
 export const Period = styled.View`
   margin: 5px;
-  padding: 15px 0px;
-  border: 1px #ddd solid;
+  padding: 15px 10px;
+  border: 1px #999 solid;
   border-radius: 3px;
 `
 
@@ -21,7 +21,4 @@ export const PeriodText = styled.Text`
   margin-left: 30px;
   color: #347851;
   font-weight: bold;
-  text-decoration: underline;
 `
-
-export const Subjects = styled.View``
