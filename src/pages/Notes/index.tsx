@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {ActivityIndicator} from 'react-native'
+import {ActivityIndicator as Indicator} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {Container, Content, Reload} from './styles'
+import {Container, Content, Reload, Error} from './styles'
 import Period from './components/Period'
 
 import {getRealm} from '~/service/Realm'
@@ -12,17 +12,16 @@ import {SigaButton} from '~/styles/styles'
 export default function Notes() {
   const [periods, setPeriods] = useState<PeriodType[] | null>()
   const [refreshing, setRefreshing] = useState(false)
+  const [error, setError] = useState<string>()
 
   async function getLoginAndPassword(): Promise<string[]> {
-    let login = '',
-      password = ''
+    let arrayLoginAndPassword = ['', '']
     const realm = await getRealm()
     realm.write(() => {
       const user = realm.objects<UserSchema>('User')[0]
-      login = user.login
-      password = user.password
+      arrayLoginAndPassword = [user.login, user.password]
     })
-    return [login, password]
+    return arrayLoginAndPassword
   }
 
   async function refreshNotes() {
@@ -30,6 +29,7 @@ export default function Notes() {
 
     const [login, password] = await getLoginAndPassword()
     try {
+      setError('')
       setRefreshing(true)
       const {data, status} = await Api.get(`/notes?login=${login}&pass=${password}`)
       if (status === 200) {
@@ -41,7 +41,7 @@ export default function Notes() {
         })
       }
     } catch (err) {
-      console.error(err)
+      setError(err.message)
     } finally {
       setRefreshing(false)
     }
@@ -49,14 +49,6 @@ export default function Notes() {
 
   function _render() {
     return periods?.map((item, index) => <Period key={index} item={item} />)
-  }
-
-  function _renderRText() {
-    return refreshing ? (
-      <ActivityIndicator color="#347851" />
-    ) : (
-      <Icon name="reload" color="#fff" size={25} />
-    )
   }
 
   useEffect(() => {
@@ -73,8 +65,11 @@ export default function Notes() {
   return (
     <Container>
       <Content>{_render()}</Content>
+      <Error>{error}</Error>
       <Reload onPress={refreshNotes}>
-        <SigaButton>{_renderRText()}</SigaButton>
+        <SigaButton>
+          {refreshing ? <Indicator color="#fff" /> : <Icon name="reload" color="#fff" size={25} />}
+        </SigaButton>
       </Reload>
     </Container>
   )

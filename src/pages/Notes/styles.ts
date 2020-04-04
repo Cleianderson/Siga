@@ -16,3 +16,8 @@ export const Reload = styled.TouchableOpacity`
   border-radius:3px;
   align-self:center;
 `
+export const Error = styled.Text`
+  color: #a00;
+  font-weight: bold;
+  text-align: center;
+`
