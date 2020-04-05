@@ -21,3 +21,8 @@ export const Error = styled.Text`
   font-weight: bold;
   text-align: center;
 `
+export const Empty = styled.Text`
+  color: #666;
+  font-weight: bold;
+  text-align: center;
+`

@@ -1,20 +1,21 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
 
-// import { Container } from './styles';
-import Homepage from '../Home'
-import Notespage from '../Notes'
+import Home from '../Home'
+import Notes from '../Notes'
+import Horary from '../Horary'
 
 const Stack = createStackNavigator()
 
-export default function Home() {
+export default function Student() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Início" component={Homepage} options={{
+      <Stack.Screen name="Início" component={Home} options={{
         headerTransparent:true,
         title:''
       }} />
-      <Stack.Screen name="Notas" component={Notespage} />
+      <Stack.Screen name="Notas" component={Notes} />
+      <Stack.Screen name="Horário" component={Horary} />
     </Stack.Navigator>
   )
 }

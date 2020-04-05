@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react'
 import {ActivityIndicator as Indicator, FlatList} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {Container, Reload, Error} from './styles'
+import {Container, Reload, Error, Empty} from './styles'
 import Period from './components/Period'
 
 import {getRealm} from '~/service/Realm'
 import Api from '~/service/Api'
-import {SigaButton} from '~/styles/styles'
+import SigaButton from '~/components/SigaButton'
 
 export default function Notes() {
   const [periods, setPeriods] = useState<PeriodType[] | null>()
@@ -65,19 +65,23 @@ export default function Notes() {
   return (
     <Container>
       <FlatList
-        getItemLayout={(data, index) => (
-          {length: 350, offset: 50 * index, index}
-        )}
+        getItemLayout={(data, index) => ({length: 350, offset: 50 * index, index})}
         data={periods}
         keyExtractor={(i, index) => String(index)}
         renderItem={_render}
+        ListEmptyComponent={
+          <Empty>
+            Se for a primeira vez que você acessa essa tela, por favor clique no botão abaixo
+          </Empty>
+        }
       />
       <Error>{error}</Error>
-      <Reload onPress={refreshNotes}>
-        <SigaButton>
-          {refreshing ? <Indicator color="#fff" /> : <Icon name="reload" color="#fff" size={25} />}
-        </SigaButton>
-      </Reload>
+      <SigaButton
+        name="@reload"
+        onPress={refreshNotes}
+        indicator={refreshing}
+        style={{alignSelf: 'center'}}
+      />
     </Container>
   )
 }

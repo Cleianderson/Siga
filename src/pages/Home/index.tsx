@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import {StatusBar} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
-import {SigaButton} from '~/styles/styles'
+import SigaButton from '~/components/SigaButton'
 
-import {Container, ContainerActions, Content, Welcome, Action, TextAction} from './styles'
+import {Container, ContainerActions, Content, Welcome, Info, Item, Value} from './styles'
 import {getRealm} from '~/service/Realm'
 import UserSchema from '~/utils/Schema/UserSchema'
 
 export default function Home() {
-  const [name, setName] = useState<string>()
+  const [user, setUser] = useState<UserSchema>()
   const navigation = useNavigation()
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function Home() {
       const realm = await getRealm()
 
       const user = realm.objects<UserSchema>('User')[0]
-      setName(user.name)
+      setUser(user)
     }
     loadUser()
   }, [])
@@ -24,14 +24,35 @@ export default function Home() {
   return (
     <Container>
       <StatusBar backgroundColor="#363" />
-      <Welcome>Olá, {name?.match(/\w{1,}/)}</Welcome>
+      <Welcome>Seja bem-vindx</Welcome>
+      <Info>
+        <Item
+          style={{
+            paddingHorizontal: 7,
+            position: 'absolute',
+            left: 10,
+            top: -15,
+            backgroundColor: '#eee',
+          }}>
+          Informações
+        </Item>
+        <Item>
+          Nome: <Value>{user?.name}</Value>
+        </Item>
+        <Item>
+          Perfil: <Value>{user?.type}</Value>
+        </Item>
+        <Item>
+          Orgão: <Value>{user?.org}</Value>
+        </Item>
+        <Item>
+          Módulo: <Value>{user?.model}</Value>
+        </Item>
+      </Info>
       <Content></Content>
       <ContainerActions>
-        <Action onPress={() => navigation.navigate('Notas')}>
-          <SigaButton>
-            <TextAction>Notas</TextAction>
-          </SigaButton>
-        </Action>
+        <SigaButton name="Notas" onPress={() => navigation.navigate('Notas')} />
+        <SigaButton name="Horário" onPress={() => navigation.navigate('Horário')} />
       </ContainerActions>
     </Container>
   )

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {ActivityIndicator as Indicator} from 'react-native'
 
-import {SigaButton} from '~/styles/styles'
+import SigaButton from '~/components/SigaButton'
 import {Container, Image, Input, Submit, TextSubmit, ContainerImage, Error} from './styles'
 
 import Api from '~/service/Api'
@@ -65,11 +65,7 @@ const Login = ({state}: {state: [boolean, React.Dispatch<React.SetStateAction<bo
           secureTextEntry={true}
           placeholder="Senha"
         />
-        <Submit onPress={handleSubmit}>
-          <SigaButton>
-            {submiting ? <Indicator color="#fff" /> : <TextSubmit>Entrar</TextSubmit>}
-          </SigaButton>
-        </Submit>
+        <SigaButton name="Entrar" onPress={handleSubmit} />
       </Container>
     </>
   )
