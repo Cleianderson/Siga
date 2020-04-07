@@ -65,7 +65,7 @@ const Login = ({state}: {state: [boolean, React.Dispatch<React.SetStateAction<bo
           secureTextEntry={true}
           placeholder="Senha"
         />
-        <SigaButton name="Entrar" onPress={handleSubmit} />
+        <SigaButton name="Entrar" onPress={handleSubmit} indicator={submiting} />
       </Container>
     </>
   )

@@ -1,3 +1,4 @@
+
 export default class StudentSchema {
   static schema = {
     name: 'User',
@@ -5,7 +6,8 @@ export default class StudentSchema {
     properties: {
       login: 'string',
       password: 'string',
-      notes: {type:'Period[]',default:[]},
+      notes: {type: 'Period[]', default: []},
+      horary: 'Horary?',
       name: 'string',
       type: 'string',
       org: 'string?',
@@ -17,6 +19,7 @@ export default class StudentSchema {
   public password: string
   public name: string
   public type: string
+  public horary: HorarySchema
   public notes?: PeriodType[] | null
   public org?: string | null
   public model?: string | null
