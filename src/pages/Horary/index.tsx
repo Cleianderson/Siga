@@ -39,7 +39,6 @@ export default function Horary() {
 
       const user = realm.objects<UserSchema>('User')[0]
       setUser(user)
-      console.log(user)
     }
     loadUser()
   },[])
