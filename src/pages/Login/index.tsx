@@ -7,7 +7,7 @@ import {Container, Image, Input, Submit, TextSubmit, ContainerImage, Error} from
 import Api from '~/service/Api'
 import {getRealm} from '~/service/Realm'
 
-const Login = ({state}: {state: [boolean, React.Dispatch<React.SetStateAction<boolean>>]}) => {
+const Login = ({state}: {state: [string, React.Dispatch<React.SetStateAction<string>>]}) => {
   const [isLoged, setIsLoged] = state
   const [login, setLogin] = useState<string>()
   const [error, setError] = useState<string>()
@@ -37,7 +37,7 @@ const Login = ({state}: {state: [boolean, React.Dispatch<React.SetStateAction<bo
         })
         setSubmiting(false)
         setError('')
-        setIsLoged(true)
+        setIsLoged('isLoged')
       }
     } catch (error) {
       setError(error.message)
