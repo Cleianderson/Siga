@@ -9,19 +9,20 @@ import Login from './pages/Login'
 
 import light from './styles/themes/light'
 import Splash from './components/Splash/Index'
-import { DicJSX } from './@types/types'
 
 const App = () => {
   const [isLoged, setIsLoged] = useState<string>('not_loaded')
 
-  const componentToRender:DicJSX  = {
-      not_loaded: <Splash />,
-      not_loged: <Login state={[isLoged, setIsLoged]} />,
-      loged: (<NavigationContainer>
-          <ThemeProvider theme={light}>
-            <Student />
-          </ThemeProvider>
-        </NavigationContainer>)
+  const componentToRender: DicJSX = {
+    not_loaded: <Splash />,
+    not_loged: <Login state={[isLoged, setIsLoged]} />,
+    loged: (
+      <NavigationContainer>
+        <ThemeProvider theme={light}>
+          <Student />
+        </ThemeProvider>
+      </NavigationContainer>
+    ),
   }
 
   const _render = useCallback(() => {
@@ -31,7 +32,7 @@ const App = () => {
   useEffect(() => {
     async function loadUser() {
       const realm = await getRealm()
-      setIsLoged(realm.objects('User').isEmpty()?'not_loged':'loged')
+      setIsLoged(realm.objects('User').isEmpty() ? 'not_loged' : 'loged')
     }
     loadUser()
   }, [])
