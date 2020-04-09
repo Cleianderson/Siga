@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import {SectionList, Text} from 'react-native'
+import {SectionList} from 'react-native'
 
-import {Container, Content} from './styles'
+import {Container, Content, Title, ItemSection} from './styles'
 import SigaButton from '~/components/SigaButton'
 
 import {getRealm} from '~/service/Realm'
@@ -14,15 +14,20 @@ export default function Horary() {
 
   const refDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
 
-  function transformRealmDataToSectionList(days: {item:string[]}[]){
+  function transformRealmDataToSectionList(days: {item: string[]}[]) {
     let _data: SectionData = []
     days.forEach((value, index) => {
-      if(!_data[index]) _data[index] = {title:refDays[index],data:value.item}
+      const _value: string[] = []
+
+      value.item.forEach((item) => {
+        if (item.trim() !== '') _value.push(item.replace('\n',' '))
+      })
+
+      if (!_data[index]) _data[index] = {title: refDays[index], data: _value}
     })
     return _data
-  
   }
-  
+
   function transformArrayInSectionList(days: string[][]) {
     let _data: SectionData = []
     days.forEach((value, index) => {
@@ -31,16 +36,16 @@ export default function Horary() {
     return _data
   }
 
-  async function setHoraryToUser(data:any) {
-    const _days: {item:string[]}[] = [] 
+  async function setHoraryToUser(data: any) {
+    const _days: {item: string[]}[] = []
 
-    data.days.forEach((value: string[],index: number)=>{
-      if(!_days[index]) _days[index] = {item:[]}
+    data.days.forEach((value: string[], index: number) => {
+      if (!_days[index]) _days[index] = {item: []}
       _days[index].item = value
     })
     data.days = _days
     const realm = await getRealm()
-    
+
     realm.write(() => {
       const _user = realm.objects<UserSchema>('User')[0]
 
@@ -70,7 +75,7 @@ export default function Horary() {
       const realm = await getRealm()
 
       const _user = realm.objects<UserSchema>('User')[0]
-      if(_user.horary) setData(transformRealmDataToSectionList(_user.horary.days))
+      if (_user.horary) setData(transformRealmDataToSectionList(_user.horary.days))
       setUser(_user)
     }
     loadUser()
@@ -82,8 +87,8 @@ export default function Horary() {
         <SectionList
           sections={data}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => <Text>{item}</Text>}
-          renderSectionHeader={({section: {title}}) => <Text>{title}</Text>}
+          renderItem={({item}) => <ItemSection>{item}</ItemSection>}
+          renderSectionHeader={({section: {title}}) => <Title>{title}</Title>}
         />
       </Content>
       <SigaButton
