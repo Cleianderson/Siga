@@ -4,21 +4,12 @@ export default class HorarySchema {
     properties: {
       begin: 'string[]',
       end: 'string[]',
-      mon: 'string[]',
-      tue: 'string[]',
-      wed: 'string[]',
-      thu: 'string[]',
-      fri: 'string[]',
-      sat: 'string[]',
+      days: 'ArrayString[]',
     },
   }
 
   public begin: string[]
   public end: string[]
-  public mon: string[]
-  public tue: string[]
-  public wed: string[]
-  public thu: string[]
-  public fri: string[]
-  public sat: string[]
+  public days: string[][]
+
 }
