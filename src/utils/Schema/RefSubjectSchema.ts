@@ -1,10 +1,10 @@
 export default class PeriodSchema {
   static schema = {
-    name: 'Period',
-    primaryKey: 'name',
+    name: 'RefSubjects',
     properties: {
+      id: 'string',
       name: 'string',
-      subjects: 'Note[]'
+      _class: 'string',
     },
   }
 }

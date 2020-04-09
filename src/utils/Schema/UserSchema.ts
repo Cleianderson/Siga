@@ -8,19 +8,11 @@ export default class StudentSchema {
       password: 'string',
       notes: {type: 'Period[]', default: []},
       horary: 'Horary?',
+      refSubjects: {type:'RefSubjects[]',default:[]},
       name: 'string',
       type: 'string',
       org: 'string?',
       model: 'string?',
     },
   }
-
-  public login: string
-  public password: string
-  public name: string
-  public type: string
-  public horary: HorarySchema
-  public notes?: PeriodType[] | null
-  public org?: string | null
-  public model?: string | null
 }

@@ -10,7 +10,7 @@ export default class NoteSchema {
       VAFN: 'string?',
       M: 'string?',
       MFIN: 'string?',
-      Faltas: 'string',
+      Faltas: 'string?',
     },
   }
 
