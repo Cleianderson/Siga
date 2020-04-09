@@ -32,11 +32,25 @@ export default function Notes() {
       setError('')
       setRefreshing(true)
       const {data, status} = await Api.get(`/notes?login=${login}&pass=${password}`)
+      
       if (status === 200) {
         setPeriods(data)
+        const _RefSubjects: {id:string,name:string,_class:string}[] = []
+        
+        data.forEach((period:{subjects:NoteSchema[]})=>{
+          period.subjects.forEach((subject:NoteSchema)=>{
+            const id = subject.mat.match(/\w{1,}/)![0]
+            const name = subject.mat.match(/\s[a-zA-Z\u00C0-\u00FF ]+\s/)![0].trim()
+            const _class = subject.mat.match(/\w{1,}$/)![0]
+
+            _RefSubjects.push({id, name, _class})
+          })
+        })
+        
         const realm = await getRealm()
         realm.write(() => {
           const user = realm.objects<UserSchema>('User')[0]
+          user.refSubjects = _RefSubjects
           user.notes = data
         })
       }

@@ -19,13 +19,17 @@ type UserSchema = {
   notes?: PeriodType[] | null
   org?: string | null
   model?: string | null
+  refSubjects: {id: string; name: string; _class: string; }[]
 }
-type PeriodType = {name: string; subjects: NoteSchema[]}
+type PeriodType = {
+  name: string
+  subjects: NoteSchema[]
+}
 type HorarySchema = {
   begin: string[]
   end: string[]
-  days: {item:string[]}[]
+  days: {item: string[]}[]
 }
-type SectionData = {title: string; data: string[]}[]
-type DicJSX = {[key:string]:JSX.Element}
-type strArr = {item:string[]}
+type SectionData = {title: string; data: {id:string;name:string;_class:string; horary:string}[]}[]
+type DicJSX = {[key: string]: JSX.Element}
+type strArr = {item: string[]}

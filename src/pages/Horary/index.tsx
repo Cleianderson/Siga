@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {SectionList} from 'react-native'
 
-import {Container, Content, Title, ItemSection} from './styles'
+import {Container, Content, Title, ItemContainer, ItemDescription, ItemValue} from './styles'
 import SigaButton from '~/components/SigaButton'
 
 import {getRealm} from '~/service/Realm'
@@ -14,13 +14,20 @@ export default function Horary() {
 
   const refDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
 
-  function transformRealmDataToSectionList(days: {item: string[]}[]) {
+  function transformRealmDataToSectionList(_user: UserSchema) {
     let _data: SectionData = []
-    days.forEach((value, index) => {
-      const _value: string[] = []
+    _user.horary.days.forEach((value, index) => {
+      const _value: {id: string; name: string; _class: string; horary: string}[] = []
 
       value.item.forEach((item) => {
-        if (item.trim() !== '') _value.push(item.replace('\n',' '))
+        if (item.trim() !== '') {
+          const id = item.match(/^\d{1,}/)![0]
+          const matter = _user.refSubjects.filter((value) => value.id === id)[0]
+          const horary = item.match(/(\d{2}:\d{2}) às (\d{2}:\d{2})/)![0]
+
+          if (matter)
+            _value.push({id, name: matter.name, _class: matter._class, horary})
+        }
       })
 
       if (!_data[index]) _data[index] = {title: refDays[index], data: _value}
@@ -30,8 +37,21 @@ export default function Horary() {
 
   function transformArrayInSectionList(days: string[][]) {
     let _data: SectionData = []
+
     days.forEach((value, index) => {
-      _data.push({title: refDays[index], data: value})
+      const _value: {id: string; name: string; _class: string; horary: string}[] = []
+
+      value.forEach((item) => {
+        if (item.trim() !== '') {
+          const id = item.match(/^\d{1,}/)![0]
+          const refSubject = user?.refSubjects.filter((subItem) => subItem.id === id)[0]
+          const horary = item.match(/(\d{2}:\d{2}) às (\d{2}:\d{2})/)![0]
+
+          _value.push({id, name: refSubject!.name, _class: refSubject!._class, horary: horary})
+        }
+      })
+
+      _data.push({title: refDays[index], data: _value})
     })
     return _data
   }
@@ -75,8 +95,8 @@ export default function Horary() {
       const realm = await getRealm()
 
       const _user = realm.objects<UserSchema>('User')[0]
-      if (_user.horary) setData(transformRealmDataToSectionList(_user.horary.days))
       setUser(_user)
+      if (_user.horary) setData(transformRealmDataToSectionList(_user))
     }
     loadUser()
   }, [])
@@ -86,8 +106,15 @@ export default function Horary() {
       <Content>
         <SectionList
           sections={data}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => <ItemSection>{item}</ItemSection>}
+          keyExtractor={(item, index) => item.id + index}
+          renderItem={({item}) => (
+          <ItemContainer>
+            <ItemDescription>Id: <ItemValue>{item.id}</ItemValue></ItemDescription>
+            <ItemDescription>Nome: <ItemValue>{item.name}</ItemValue></ItemDescription>
+            <ItemDescription>Turma: <ItemValue>{item._class}</ItemValue></ItemDescription>
+            <ItemDescription>Horário: <ItemValue>{item.horary}</ItemValue></ItemDescription>
+          </ItemContainer>
+          )}
           renderSectionHeader={({section: {title}}) => <Title>{title}</Title>}
         />
       </Content>
