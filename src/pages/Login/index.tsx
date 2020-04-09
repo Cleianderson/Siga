@@ -14,34 +14,44 @@ const Login = ({state}: {state: [string, React.Dispatch<React.SetStateAction<str
   const [password, setPassword] = useState<string>()
   const [submiting, setSubmiting] = useState<boolean>(false)
 
+  const actions: {[key1:number]:(data:any)=> Promise<void> | void} = {
+    200: async (data: any) => {
+      const user = {
+        login,
+        password,
+        name: data.name,
+        type: data.func,
+        org: data.org,
+        model: data.mode,
+      }
+
+      const realm = await getRealm()
+
+      realm.write(() => {
+        realm.create('User', user)
+      })
+      setSubmiting(false)
+      setError('')
+      setIsLoged('loged')
+    },
+    400: (data: {error: string}) => {
+      setError(data.error)
+      setSubmiting(false)
+    },
+  }
+
   async function handleSubmit() {
     if (submiting) return 0
     try {
       setSubmiting(true)
       setError('')
-      const {status, data} = await Api.get(`/login?login=${login}&pass=${password}`)
-      if (status === 200) {
-        const user = {
-          login,
-          password,
-          name: data.name,
-          type: data.func,
-          org: data.org,
-          model: data.mode,
-        }
-
-        const realm = await getRealm()
-
-        realm.write(() => {
-          realm.create('User', user)
-        })
-        setSubmiting(false)
-        setError('')
-        setIsLoged('isLoged')
-      }
+      const {status, data} = await Api.get(`/login?login=${login}&pass=${password}`, {
+        validateStatus: () => true,
+      })
+      const functionByStatus = actions[status]
+      if (functionByStatus) functionByStatus(data)
     } catch (error) {
-      setError(error.message)
-      setSubmiting(false)
+      actions[400]({error: error.message})
     }
   }
 
@@ -51,6 +61,7 @@ const Login = ({state}: {state: [string, React.Dispatch<React.SetStateAction<str
         <Image source={require('~/assets/logo.png')} />
       </ContainerImage>
       <Container>
+        <Error>{error}</Error>
         <Input
           value={login}
           onChangeText={setLogin}
