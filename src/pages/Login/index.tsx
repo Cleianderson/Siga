@@ -7,14 +7,16 @@ import {Container, Image, Input, Submit, TextSubmit, ContainerImage, Error} from
 import Api from '~/service/Api'
 import {getRealm} from '~/service/Realm'
 
-const Login = ({state}: {state: [string, React.Dispatch<React.SetStateAction<string>>]}) => {
+type LoginProps = {state: [string, React.Dispatch<React.SetStateAction<string>>]}
+
+const Login = ({state}: LoginProps) => {
   const [isLoged, setIsLoged] = state
   const [login, setLogin] = useState<string>()
   const [error, setError] = useState<string>()
   const [password, setPassword] = useState<string>()
   const [submiting, setSubmiting] = useState<boolean>(false)
 
-  const actions: {[key1:number]:(data:any)=> Promise<void> | void} = {
+  const actions: {[key1: number]: (data: any) => Promise<void> | void} = {
     200: async (data: any) => {
       const user = {
         login,

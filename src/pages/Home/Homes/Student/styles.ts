@@ -10,7 +10,7 @@ export const Content = styled.View`
 
 export const Welcome = styled.Text`
   margin-top: 10px;
-  font-size: 16px;
+  font-size: 20px;
   color: #666;
   width: 100%;
   text-align: center;
@@ -50,4 +50,12 @@ export const Action = styled.TouchableOpacity`
 export const TextAction = styled.Text`
   color: ${props => props.theme.bg.primary};
   font-weight: bold;
+`
+
+export const ImageSiga = styled.Image`
+  width: 105px; 
+  height: 40px; 
+  align-self: center; 
+  margin: 15px;
+  margin-bottom: 0px;
 `
