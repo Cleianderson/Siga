@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {Period, PeriodText, Button, Header} from './styles'
+import {Period, PeriodText, Button, Header,Content} from './styles'
 import Subject from '../Subject'
-import {FlatList} from 'react-native'
+import {FlatList, Text} from 'react-native'
 
 export default function Notes({item}: {item: PeriodType}) {
   const [show, setShow] = useState<boolean>(false)
@@ -19,21 +19,24 @@ export default function Notes({item}: {item: PeriodType}) {
   return (
     <Period>
       <Header>
-        <PeriodText>{item.name}</PeriodText>
         <Button onPress={handleToggleShow}>
-          <Icon name={show ? 'minus-box' : 'plus-box'} color="#d64d09" size={20} />
+          <Icon name={show ? 'minus' : 'plus'} color="#d64d09" size={20} />
         </Button>
+        <PeriodText>
+          <Text style={{color: '#000'}}>Período: </Text>
+          {item.name}
+        </PeriodText>
       </Header>
-      <FlatList
-        initialNumToRender={1}
-        getItemLayout={(data, index) => (
-          {length: 300, offset: 30 * index, index}
-        )}
-        style={{display: show ? 'flex' : 'none'}}
-        data={item.subjects}
-        keyExtractor={(item, index) => String(index)}
-        renderItem={_render}
-      />
+      <Content>
+        <FlatList
+          initialNumToRender={1}
+          getItemLayout={(data, index) => ({length: 300, offset: 30 * index, index})}
+          style={{display: show ? 'flex' : 'none'}}
+          data={item.subjects}
+          keyExtractor={(item, index) => String(index)}
+          renderItem={_render}
+        />
+      </Content>
     </Period>
   )
 }

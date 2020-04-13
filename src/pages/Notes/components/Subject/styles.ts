@@ -6,21 +6,16 @@ export const Container = styled.View`
 `
 
 export const Content = styled.View`
-  justify-content: center;
+  /* justify-content: center; */
   margin-left: 7px;
-  margin-right: 7px;
-  padding-top: 10px;
-  border: 0px #999 solid;
-  border-bottom-right-radius: 7px;
-  border-bottom-left-radius: 7px;
+  /* margin-right: 7px; */
+  padding: 10px;
   border-left-width: 1px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
 `
 
 export const Header = styled.View`
   flex-direction: row;
-  /* margin-bottom: 5px; */
+  align-items: center;
 `
 
 export const Items = styled.View`
@@ -31,7 +26,8 @@ export const Items = styled.View`
 `
 
 export const Description = styled.Text`
-  text-align: center;
+  text-align: left;
+  font-weight: bold;
 `
 
 export const Item = styled.View``
@@ -47,11 +43,16 @@ export const Value = styled.Text`
 
 export const Text = styled.Text`
   color: #347851;
-  flex: 1;
   font-weight: bold;
+  margin-right: 5px;
 `
 export const Prof = styled.Text`
   color: #347851;
-  text-align: center;
   font-weight: bold;
+`
+
+export const Line = styled.View`
+  background: ${props => props.theme.text.color.primary};
+  height: 1px;
+  flex:1;
 `
