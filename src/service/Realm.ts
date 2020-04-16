@@ -1,14 +1,21 @@
 import realm from 'realm'
 
-import UserSchema from '../utils/Schema/UserSchema'
-import NoteSchema from '../utils/Schema/NoteSchema'
-import PeriodSchema from '../utils/Schema/PeriodSchema'
-import HorarySchema from '../utils/Schema/HorarySchema'
-import ArrayString from '../utils/Schema/StringArraySchema'
-import RefSubjects from '../utils/Schema/RefSubjectSchema'
+import Schemas from '~/utils/Schema'
 
 export function getRealm() {
-  return realm.open({
-    schema: [UserSchema, NoteSchema, PeriodSchema, HorarySchema, ArrayString, RefSubjects],
-  })
+  return realm.open({schema: Schemas})
+}
+
+export async function getUser(callback?: () => void): Promise<UserSchema & Realm.Object | undefined> {
+  const realm = await getRealm()
+  const user = realm.objects<UserSchema>('User')
+
+  if (callback) callback()
+
+  if (user.length > 1) {
+    throw new Error('There is more one user')
+  } else if (user.length == 1) {
+    return user[0]
+  }
+  return undefined
 }

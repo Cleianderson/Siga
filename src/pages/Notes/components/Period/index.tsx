@@ -29,7 +29,7 @@ export default function Notes({item}: {item: PeriodType}) {
       </Header>
       <Content>
         <FlatList
-          initialNumToRender={1}
+          // initialNumToRender={1}
           getItemLayout={(data, index) => ({length: 300, offset: 30 * index, index})}
           style={{display: show ? 'flex' : 'none'}}
           data={item.subjects}

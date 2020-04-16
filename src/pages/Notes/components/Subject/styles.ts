@@ -10,7 +10,7 @@ export const Content = styled.View`
   margin-left: 7px;
   /* margin-right: 7px; */
   padding: 10px;
-  border-left-width: 1px;
+  /* border-left-width: 1px; */
 `
 
 export const Header = styled.View`

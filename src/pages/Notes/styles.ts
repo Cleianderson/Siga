@@ -22,7 +22,10 @@ export const Error = styled.Text`
   text-align: center;
 `
 export const Empty = styled.Text`
+  flex:1;
   color: #666;
   font-weight: bold;
   text-align: center;
+  justify-content:center;
+  align-items: center;
 `

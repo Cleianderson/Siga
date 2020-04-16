@@ -4,15 +4,16 @@ import {SectionList} from 'react-native'
 import {Container, Content, Title, ItemContainer, ItemDescription, ItemValue} from './styles'
 import SigaButton from '~/components/SigaButton'
 
-import {getRealm} from '~/service/Realm'
+import {getRealm, getUser} from '~/service/Realm'
 import Api from '~/service/Api'
+
+const refDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
 
 export default function Horary() {
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [data, setData] = useState<SectionData>([])
   const [user, setUser] = useState<UserSchema>()
 
-  const refDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
 
   function transformRealmDataToSectionList(_user: UserSchema) {
     let _data: SectionData = []
@@ -92,11 +93,9 @@ export default function Horary() {
 
   useEffect(() => {
     async function loadUser() {
-      const realm = await getRealm()
-
-      const _user = realm.objects<UserSchema>('User')[0]
+      const _user = await getUser()
       setUser(_user)
-      if (_user.horary) setData(transformRealmDataToSectionList(_user))
+      if (_user!.horary) setData(transformRealmDataToSectionList(_user!))
     }
     loadUser()
   }, [])

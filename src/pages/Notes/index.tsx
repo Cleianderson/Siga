@@ -3,24 +3,19 @@ import {FlatList} from 'react-native'
 
 import {Container, Error, Empty} from './styles'
 import Period from './components/Period'
-
-import {getRealm} from '~/service/Realm'
-import Api from '~/service/Api'
 import SigaButton from '~/components/SigaButton'
 
+import {getRealm, getUser} from '~/service/Realm'
+import Api from '~/service/Api'
+
 export default function Notes() {
-  const [periods, setPeriods] = useState<PeriodType[] | null>()
+  const [periods, setPeriods] = useState<PeriodType[] | undefined>([])
   const [refreshing, setRefreshing] = useState(false)
   const [error, setError] = useState<string>()
 
   async function getLoginAndPassword(): Promise<string[]> {
-    let arrayLoginAndPassword = ['', '']
-    const realm = await getRealm()
-    realm.write(() => {
-      const user = realm.objects<UserSchema>('User')[0]
-      arrayLoginAndPassword = [user.login, user.password]
-    })
-    return arrayLoginAndPassword
+    const user = await getUser()
+    return [user!.login, user!.password]
   }
 
   async function refreshNotes() {
@@ -71,11 +66,8 @@ export default function Notes() {
 
   useEffect(() => {
     async function loadPeriods() {
-      const realm = await getRealm()
-      realm.write(() => {
-        const user = realm.objects<UserSchema>('User')[0]
-        setPeriods(user.notes)
-      })
+      const user = await getUser()
+      setPeriods(user!.notes)
     }
     loadPeriods()
   }, [])
@@ -87,13 +79,13 @@ export default function Notes() {
         data={periods}
         keyExtractor={(i, index) => String(index)}
         renderItem={_render}
-        ListEmptyComponent={
-          <Empty>
-            Se for a primeira vez que você acessa essa tela, por favor clique no botão abaixo
-          </Empty>
-        }
       />
       <Error>{error}</Error>
+      {!periods?.length  ? (
+        <Empty>
+          Se for a primeira vez que você acessa essa tela, por favor, clique no botão abaixo
+        </Empty>
+      ): null}
       <SigaButton
         name="@reload"
         onPress={refreshNotes}

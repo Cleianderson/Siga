@@ -1,13 +1,10 @@
 import 'react-native-gesture-handler'
 import React, {useEffect, useState, useCallback} from 'react'
-import {ThemeProvider} from 'styled-components/native'
-import {NavigationContainer} from '@react-navigation/native'
 
-import {getRealm} from './service/Realm'
-import Student from './pages/Student'
+import {getUser} from './service/Realm'
+
+import Application from './pages/Application'
 import Login from './pages/Login'
-
-import light from './styles/themes/light'
 import Splash from './components/Splash/Index'
 
 const App = () => {
@@ -16,13 +13,7 @@ const App = () => {
   const componentToRender: DicJSX = {
     not_loaded: <Splash />,
     not_loged: <Login state={[isLoged, setIsLoged]} />,
-    loged: (
-      <NavigationContainer>
-        <ThemeProvider theme={light}>
-          <Student />
-        </ThemeProvider>
-      </NavigationContainer>
-    ),
+    loged: <Application />,
   }
 
   const _render = useCallback(() => {
@@ -31,8 +22,8 @@ const App = () => {
 
   useEffect(() => {
     async function loadUser() {
-      const realm = await getRealm()
-      setIsLoged(realm.objects('User').isEmpty() ? 'not_loged' : 'loged')
+      const user = await getUser()
+      setIsLoged(user ? 'loged' : 'not_loged')
     }
     loadUser()
   }, [])
