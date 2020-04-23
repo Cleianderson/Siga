@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
-import {ActivityIndicator as Indicator} from 'react-native'
 
 import SigaButton from '~/components/SigaButton'
-import {Container, Image, Input, Submit, TextSubmit, ContainerImage, Error} from './styles'
+import {Container, Image, Input, ContainerImage, Error} from './styles'
 
 import Api from '~/service/Api'
 import {getRealm} from '~/service/Realm'
@@ -47,9 +46,16 @@ const Login = ({state}: LoginProps) => {
     try {
       setSubmiting(true)
       setError('')
-      const {status, data} = await Api.get(`/login?login=${login}&pass=${password}`, {
-        validateStatus: () => true,
-      })
+      const {status, data} = await Api.post(
+        '/login',
+        {
+          login,
+          pass: password,
+        },
+        {
+          validateStatus: () => true,
+        },
+      )
       const functionByStatus = actions[status]
       if (functionByStatus) functionByStatus(data)
     } catch (error) {

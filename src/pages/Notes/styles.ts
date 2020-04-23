@@ -21,11 +21,12 @@ export const Error = styled.Text`
   font-weight: bold;
   text-align: center;
 `
-export const Empty = styled.Text`
+export const Empty = styled.View`
   flex:1;
-  color: #666;
-  font-weight: bold;
-  text-align: center;
   justify-content:center;
   align-items: center;
+`
+
+export const EmptyText = styled.Text`
+  color: #666;
 `

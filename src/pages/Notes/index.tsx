@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react'
-import {FlatList} from 'react-native'
+import React, {useState, useEffect, useCallback, useContext} from 'react'
+import {FlatList, ActivityIndicator as Indicator} from 'react-native'
+import {ThemeContext} from 'styled-components/native'
 
-import {Container, Error, Empty} from './styles'
+import {Container, Error, Empty, EmptyText} from './styles'
 import Period from './components/Period'
 import SigaButton from '~/components/SigaButton'
 
@@ -9,9 +10,11 @@ import {getRealm, getUser} from '~/service/Realm'
 import Api from '~/service/Api'
 
 export default function Notes() {
-  const [periods, setPeriods] = useState<PeriodType[] | undefined>([])
+  const [periods, setPeriods] = useState<PeriodType[] | undefined>()
   const [refreshing, setRefreshing] = useState(false)
   const [error, setError] = useState<string>()
+
+  const theme = useContext(ThemeContext)
 
   async function getLoginAndPassword(): Promise<string[]> {
     const user = await getUser()
@@ -25,7 +28,10 @@ export default function Notes() {
     try {
       setError('')
       setRefreshing(true)
-      const {data, status} = await Api.get(`/notes?login=${login}&pass=${password}`)
+      const {data, status} = await Api.post('/notes', {
+        login,
+        pass: password,
+      })
 
       if (status === 200) {
         setPeriods(data)
@@ -60,9 +66,24 @@ export default function Notes() {
     }
   }
 
-  const _render = ({item}: {item: PeriodType}) => {
-    return <Period item={item} />
-  }
+  const _renderInfo = useCallback(() => {
+    if (periods === undefined) return <Indicator color={theme.text.color.primary} />
+    else if (periods?.length === 0)
+      return <EmptyText>Clique no botão abaixo para carregar suas notas</EmptyText>
+  }, [periods])
+
+  const _render = useCallback(() => {
+    const renderPeriod = ({item}: {item: PeriodType}) => <Period item={item} />
+
+    return (
+      <FlatList
+        getItemLayout={(data, index) => ({length: 350, offset: 50 * index, index})}
+        data={periods}
+        keyExtractor={(i, index) => String(index)}
+        renderItem={renderPeriod}
+      />
+    )
+  }, [periods])
 
   useEffect(() => {
     async function loadPeriods() {
@@ -74,18 +95,9 @@ export default function Notes() {
 
   return (
     <Container>
-      <FlatList
-        getItemLayout={(data, index) => ({length: 350, offset: 50 * index, index})}
-        data={periods}
-        keyExtractor={(i, index) => String(index)}
-        renderItem={_render}
-      />
-      <Error>{error}</Error>
-      {!periods?.length  ? (
-        <Empty>
-          Se for a primeira vez que você acessa essa tela, por favor, clique no botão abaixo
-        </Empty>
-      ): null}
+      {Boolean(periods?.toString()) && _render()}
+      {Boolean(error) && <Error>{error}</Error>}
+      {<Empty>{_renderInfo()}</Empty>}
       <SigaButton
         name="@reload"
         onPress={refreshNotes}

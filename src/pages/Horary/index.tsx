@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import {SectionList} from 'react-native'
 
-import {Container, Content, Title, ItemContainer, ItemDescription, ItemValue} from './styles'
+import {Container, Content, Title} from './styles'
 import SigaButton from '~/components/SigaButton'
 
 import {getRealm, getUser} from '~/service/Realm'
 import Api from '~/service/Api'
+import Day from './Components/Day'
 
 const refDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
 
@@ -13,7 +14,6 @@ export default function Horary() {
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [data, setData] = useState<SectionData>([])
   const [user, setUser] = useState<UserSchema>()
-
 
   function transformRealmDataToSectionList(_user: UserSchema) {
     let _data: SectionData = []
@@ -26,8 +26,7 @@ export default function Horary() {
           const matter = _user.refSubjects.filter((value) => value.id === id)[0]
           const horary = item.match(/(\d{2}:\d{2}) às (\d{2}:\d{2})/)![0]
 
-          if (matter)
-            _value.push({id, name: matter.name, _class: matter._class, horary})
+          if (matter) _value.push({id, name: matter.name, _class: matter._class, horary})
         }
       })
 
@@ -79,9 +78,10 @@ export default function Horary() {
 
     try {
       setRefreshing(true)
-      const {data: resData, status} = await Api.get(
-        `/horary?login=${user?.login}&pass=${user?.password}`,
-      )
+      const {data: resData, status} = await Api.post('/horary', {
+        login: user!.login,
+        pass: user!.password,
+      })
       if (status === 200) {
         const days: string[][] = resData.days
         setData(transformArrayInSectionList(days))
@@ -90,6 +90,8 @@ export default function Horary() {
       }
     } catch (error) {}
   }
+
+  const _renderDays = ({item}:any) => <Day item={item} />
 
   useEffect(() => {
     async function loadUser() {
@@ -106,14 +108,7 @@ export default function Horary() {
         <SectionList
           sections={data}
           keyExtractor={(item, index) => item.id + index}
-          renderItem={({item}) => (
-          <ItemContainer>
-            <ItemDescription>Id: <ItemValue>{item.id}</ItemValue></ItemDescription>
-            <ItemDescription>Nome: <ItemValue>{item.name}</ItemValue></ItemDescription>
-            <ItemDescription>Turma: <ItemValue>{item._class}</ItemValue></ItemDescription>
-            <ItemDescription>Horário: <ItemValue>{item.horary}</ItemValue></ItemDescription>
-          </ItemContainer>
-          )}
+          renderItem={_renderDays}
           renderSectionHeader={({section: {title}}) => <Title>{title}</Title>}
         />
       </Content>
