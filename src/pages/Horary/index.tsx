@@ -4,7 +4,6 @@ import {SectionList} from 'react-native'
 import {Container, Content, Title} from './styles'
 import SigaButton from '~/components/SigaButton'
 
-import {getRealm, getUser} from '~/service/Realm'
 import Api from '~/service/Api'
 import Day from './Components/Day'
 
@@ -64,13 +63,11 @@ export default function Horary() {
       _days[index].item = value
     })
     data.days = _days
-    const realm = await getRealm()
+    // realm.write(() => {
+    //   const _user = realm.objects<UserSchema>('User')[0]
 
-    realm.write(() => {
-      const _user = realm.objects<UserSchema>('User')[0]
-
-      _user.horary = data
-    })
+    //   _user.horary = data
+    // })
   }
 
   async function handleLoadHorary() {
@@ -95,9 +92,9 @@ export default function Horary() {
 
   useEffect(() => {
     async function loadUser() {
-      const _user = await getUser()
-      setUser(_user)
-      if (_user!.horary) setData(transformRealmDataToSectionList(_user!))
+      // const _user = await getUser()
+      // setUser(_user)
+      // if (_user!.horary) setData(transformRealmDataToSectionList(_user!))
     }
     loadUser()
   }, [])

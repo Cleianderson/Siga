@@ -6,7 +6,6 @@ import {Container, Error, Empty, EmptyText} from './styles'
 import Period from './components/Period'
 import SigaButton from '~/components/SigaButton'
 
-import {getRealm, getUser} from '~/service/Realm'
 import Api from '~/service/Api'
 
 export default function Notes() {
@@ -16,15 +15,15 @@ export default function Notes() {
 
   const theme = useContext(ThemeContext)
 
-  async function getLoginAndPassword(): Promise<string[]> {
-    const user = await getUser()
-    return [user!.login, user!.password]
-  }
+  // async function getLoginAndPassword(): Promise<string[]> {
+  //   const user = await getUser()
+  //   return [user!.login, user!.password]
+  // }
 
   async function refreshNotes() {
     if (refreshing) return 0
 
-    const [login, password] = await getLoginAndPassword()
+    // const [login, password] = await getLoginAndPassword()
     try {
       setError('')
       setRefreshing(true)
@@ -52,12 +51,11 @@ export default function Notes() {
           })
         })
 
-        const realm = await getRealm()
-        realm.write(() => {
-          const user = realm.objects<UserSchema>('User')[0]
-          user.refSubjects = _RefSubjects
-          user.notes = data
-        })
+        // realm.write(() => {
+        //   const user = realm.objects<UserSchema>('User')[0]
+        //   user.refSubjects = _RefSubjects
+        //   user.notes = data
+        // })
       }
     } catch (err) {
       setError(err.message)
@@ -85,13 +83,13 @@ export default function Notes() {
     )
   }, [periods])
 
-  useEffect(() => {
-    async function loadPeriods() {
-      const user = await getUser()
-      setPeriods(user!.notes)
-    }
-    loadPeriods()
-  }, [])
+  // useEffect(() => {
+  //   async function loadPeriods() {
+  //     const user = await getUser()
+  //     setPeriods(user!.notes)
+  //   }
+  //   loadPeriods()
+  // }, [])
 
   return (
     <Container>

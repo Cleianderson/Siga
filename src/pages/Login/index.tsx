@@ -1,19 +1,18 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 
 import SigaButton from '~/components/SigaButton'
-import {Container, Image, Input, ContainerImage, Error} from './styles'
+import {Container, Content, Image, Input, ContainerImage, Error} from './styles'
 
+import Context from '~/contexts/AppContext'
 import Api from '~/service/Api'
-import {getRealm} from '~/service/Realm'
 
-type LoginProps = {state: [string, React.Dispatch<React.SetStateAction<string>>]}
-
-const Login = ({state}: LoginProps) => {
-  const [isLoged, setIsLoged] = state
+const Login = () => {
   const [login, setLogin] = useState<string>()
-  const [error, setError] = useState<string>()
   const [password, setPassword] = useState<string>()
+  const [error, setError] = useState<string>()
   const [submiting, setSubmiting] = useState<boolean>(false)
+
+  const {setIsLoged} = useContext(Context)
 
   const actions: {[key1: number]: (data: any) => Promise<void> | void} = {
     200: async (data: any) => {
@@ -26,14 +25,12 @@ const Login = ({state}: LoginProps) => {
         model: data.mode,
       }
 
-      const realm = await getRealm()
-
-      realm.write(() => {
-        realm.create('User', user)
-      })
+      // realm.write(() => {
+      //   realm.create('User', user)
+      // })
       setSubmiting(false)
       setError('')
-      setIsLoged('loged')
+      setIsLoged(true)
     },
     400: (data: {error: string}) => {
       setError(data.error)
@@ -64,12 +61,11 @@ const Login = ({state}: LoginProps) => {
   }
 
   return (
-    <>
+    <Container>
       <ContainerImage>
         <Image source={require('~/assets/logo.png')} />
       </ContainerImage>
-      <Container>
-        <Error>{error}</Error>
+      <Content>
         <Input
           value={login}
           onChangeText={setLogin}
@@ -84,9 +80,15 @@ const Login = ({state}: LoginProps) => {
           secureTextEntry={true}
           placeholder="Senha"
         />
-        <SigaButton name="Entrar" onPress={handleSubmit} indicator={submiting} />
-      </Container>
-    </>
+        <Error>{error}</Error>
+      </Content>
+      <SigaButton
+        name="Entrar"
+        onPress={handleSubmit}
+        indicator={submiting}
+        style={{width: '45%', maxWidth: 180, alignSelf: 'center'}}
+      />
+    </Container>
   )
 }
 

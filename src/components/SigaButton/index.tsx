@@ -28,7 +28,7 @@ export default function SigaButton({name, onPress, indicator, style}: SigaButton
 
   return (
     <Touchable style={style} onPress={onPress}>
-      <Gradient
+      {/* <Gradient
         colors={['#090', '#363']}
         start={{x: 0, y: 0}}
         end={{x: 0, y: 1}}
@@ -36,9 +36,9 @@ export default function SigaButton({name, onPress, indicator, style}: SigaButton
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-        }}>
+        }}> */}
         {_renderContent()}
-      </Gradient>
+      {/* </Gradient> */}
     </Touchable>
   )
 }

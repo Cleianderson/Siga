@@ -3,7 +3,6 @@ import React, {useState, useEffect, useCallback} from 'react'
 import StudentHome from './Homes/Student'
 import TeacherHome from './Homes/Teacher'
 
-import {getUser} from '~/service/Realm'
 import Splash from '~/components/Splash/Index'
 
 export default function Home() {
@@ -19,8 +18,8 @@ export default function Home() {
   }, [user])
 
   useEffect(() => {
-    const loadUser = async () => setUser(await getUser())
-    loadUser()
+    // const loadUser = async () => setUser(await getUser())
+    // loadUser()
   }, [])
 
   return renderHomeByUserType()
